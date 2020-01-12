@@ -1,4 +1,4 @@
-const { identity } = require('./utils')
+const { identity, pointEq } = require('./utils')
 const readline = require('readline')
 readline.emitKeypressEvents(process.stdin)
 process.stdin.setRawMode(true)
@@ -27,6 +27,19 @@ const switchDirection = Object.entries(DIRECTION_KEYS).reduce(
   {}
 )
 
+const range = from => to =>
+  Array(to - from)
+    .fill()
+    .map((_, i) => from + i)
+
+const createBoard = state =>
+  range(0)(8).map((_, y) =>
+    range(0)(8).map((_, x) => (state.snake.some(pointEq({ x, y })) ? '#' : '.'))
+  )
+
+const printBoard = board =>
+  console.log(board.map(row => row.join(' ')).join('\n'))
+
 /** getStateChange :: Key -> (State -> State) */
 const getStateChange = ({ name }) => switchDirection[name] || identity
 
@@ -40,6 +53,7 @@ process.stdin.on('keypress', (_, key) => {
 
 setInterval(() => {
   state = game.update(state)
+  printBoard(createBoard(state))
   console.log(state)
 }, 1000)
 
