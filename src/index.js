@@ -33,8 +33,7 @@ const range = from => to =>
     .map((_, i) => from + i)
 
 /** isSnake :: State → Point → Boolean */
-const isSnake = ({ snake }) => point =>
-  console.log(snake, point) || snake.some(pointEq(point))
+const isSnake = ({ snake }) => point => snake.some(pointEq(point))
 
 /** isApple :: State → Point → Boolean */
 const isApple = ({ apple }) => pointEq(apple)
