@@ -12,7 +12,8 @@ const parseControls = controls =>
     ''
   )
 
-const instructions = `INSTRUCTIONS:
+const instructions = `
+INSTRUCTIONS:
 Try to eat as many apples as possible without dying.
 You die by either colliding with the walls or yourself.
 
@@ -20,7 +21,8 @@ CONTROLS:
 ${parseControls(controls)}
 `
 
-const help = `ARGUMENTS:
+const help = `
+ARGUMENTS:
   1. Number of columns (min: ${minSize})[Integer]
   2. Number of rows (min: ${minSize}) [Integer]
   OR
@@ -35,7 +37,7 @@ OPTIONS:
 const options = {
   '--help': help,
   '-h': help,
-  '-b': 'Play the game in black and white',
+  '-b': 'Play a black and white version of the game',
   '-i': instructions
 }
 
