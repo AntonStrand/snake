@@ -59,5 +59,6 @@ module.exports = {
   gt,
   pointEq,
   pointOp,
-  ifElse
+  ifElse,
+  ...require('./random')
 }
