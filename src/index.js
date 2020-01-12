@@ -46,7 +46,7 @@ const createBoard = state =>
             ? GRAPHICS.apple
             : GRAPHICS.background
         )
-        .join(' ')
+        .join(GRAPHICS.background)
     )
     .join('\n')
 
@@ -64,7 +64,7 @@ process.stdin.on('keypress', (_, key) => {
 setInterval(() => {
   state = game.update(state)
   console.clear()
-  console.log(GRAPHICS.colors.background, createBoard(state))
+  console.log(createBoard(state))
 }, 80)
 
 console.log('Press any key...')
