@@ -37,24 +37,35 @@ const isWithinMatrix = state => {
   )
 }
 
-/** willCrash :: State -> Boolean */
+/** willEat :: State → Boolean  */
+const willEat = state => pointEq(nextHead(state))(state.apple)
+
+/** willCrash :: State → Boolean */
 const willCrash = state =>
   !isWithinMatrix(state) || !!state.snake.find(pointEq(nextHead(state)))
 
-/** lastMove :: State -> Point */
+/** lastMove :: State → Point */
 const lastMove = pipe(prop('directions'), last)
 
 /** isValidMove :: Point → State → Boolean */
 const isValidMove = state => move =>
   !pointEq(move)(lastMove(state)) && !pointOp(move)(lastMove(state))
 
+/** nextHead :: State → Point */
 const nextHead = ({ snake, directions }) => ({
   x: head(snake).x + last(directions).x,
   y: head(snake).y + last(directions).y
 })
 
+/** nextSnake :: State → [Point] */
 const nextSnake = state =>
   willCrash(state) ? [] : [nextHead(state), ...init(state.snake)]
+
+/** positionApple :: State → Point */
+const positionApple = ({ cols, rows }) => randomPoint(cols)(rows)
+
+/** nextApple :: State → Point */
+const nextApple = ifElse(willEat)(positionApple)(prop('apple'))
 
 const nextDirections = pipe(
   prop('directions'),
@@ -66,7 +77,7 @@ const update = applySpec({
   rows: prop('rows'),
   directions: nextDirections,
   snake: nextSnake,
-  apple: prop('apple')
+  apple: nextApple
 })
 
 const addDirection = move => state =>
