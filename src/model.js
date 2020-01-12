@@ -1,4 +1,5 @@
 const {
+  always,
   applySpec,
   head,
   identity,
@@ -20,10 +21,12 @@ const DOWN = { x: 0, y: 1 }
 const LEFT = { x: -1, y: 0 }
 const UP = { x: 0, y: -1 }
 
+const getStartSnake = rows => [{ x: 0, y: parseInt(rows / 2) }]
+
 /** initalizeState :: (Number, Number) → State */
 const initalizeState = (cols, rows) => ({
   directions: [RIGHT],
-  snake: [{ x: 0, y: parseInt(rows / 2) }],
+  snake: getStartSnake(rows),
   apple: randomPoint(cols)(rows),
   cols,
   rows
@@ -60,7 +63,7 @@ const nextHead = ({ snake, directions }) => ({
 /** nextSnake :: State → [Point] */
 const nextSnake = state =>
   willCrash(state)
-    ? []
+    ? getStartSnake(state.rows)
     : willEat(state)
     ? [nextHead(state), ...state.snake]
     : [nextHead(state), ...init(state.snake)]
@@ -78,9 +81,8 @@ const positionApple = state => {
 const nextApple = ifElse(willEat)(positionApple)(prop('apple'))
 
 /** nextDirections :: State → [Point] */
-const nextDirections = pipe(
-  prop('directions'),
-  ifElse(pipe(prop('length'), gt(1)))(tail)(identity)
+const nextDirections = ifElse(willCrash)(always([RIGHT]))(
+  pipe(prop('directions'), ifElse(pipe(prop('length'), gt(1)))(tail)(identity))
 )
 
 /** update :: State → State */

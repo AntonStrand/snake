@@ -1,3 +1,6 @@
+/** always :: a → b → a */
+const always = x => _ => x
+
 /** applySpec :: { k: (a → b) } → a → { k: b } */
 const applySpec = spec => x =>
   Object.keys(spec)
@@ -48,6 +51,7 @@ const ifElse = pred => onTrue => onFalse => x =>
   pred(x) ? onTrue(x) : onFalse(x)
 
 module.exports = {
+  always,
   applySpec,
   head,
   identity,
