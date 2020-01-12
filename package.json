@@ -1,0 +1,31 @@
+{
+  "name": "play-snake",
+  "version": "1.0.3",
+  "description": "CLI Snake in a functional style",
+  "main": "src/index.js",
+  "preferGlobal": true,
+  "bin": { "snake": "src/index.js" },
+  "scripts": {
+    "start": "node src/index.js 20 20",
+    "help": "node src/index.js -h",
+    "info": "node src/index.js -i"
+  },
+  "keywords": [
+    "Snake",
+    "FP",
+    "functional programming",
+    "functional",
+    "programming",
+    "JS",
+    "javascript",
+    "game",
+    "cli"
+  ],
+  "homepage": "https://github.com/AntonStrand/snake",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AntonStrand/snake.git"
+  },
+  "author": "Anton Strand",
+  "license": "ISC"
+}
