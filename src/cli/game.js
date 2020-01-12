@@ -6,11 +6,12 @@ readline.emitKeypressEvents(process.stdin)
 process.stdin.setRawMode(true)
 const game = require('../model')
 
-const start = (cols, rows) => {
+const start = (cols, rows, useColor = true) => {
+  const getView = createView(useColor)
   let state = game.initalizeState(cols, rows)
 
   /** actionBy :: { key :: (State → State) } */
-  const actionBy = Object.entries(config.keys).reduce(
+  const actionBy = Object.entries(config.controls).reduce(
     (savedDirections, [direction, keys]) => ({
       ...savedDirections,
       ...keys.reduce(
@@ -36,7 +37,7 @@ const start = (cols, rows) => {
   const tick = () => {
     state = game.update(state)
     console.clear()
-    console.log(createView(state))
+    console.log(getView(state))
   }
 
   return setInterval(tick, config.updateRate)
