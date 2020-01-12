@@ -65,8 +65,14 @@ const nextSnake = state =>
     ? [nextHead(state), ...state.snake]
     : [nextHead(state), ...init(state.snake)]
 
+/** isSnake :: State → Point → Boolean */
+const isSnake = ({ snake }) => point => snake.some(pointEq(point))
+
 /** positionApple :: State → Point */
-const positionApple = ({ cols, rows }) => randomPoint(cols)(rows)
+const positionApple = state => {
+  const position = randomPoint(state.cols)(state.rows)
+  return isSnake(state)(position) ? positionApple(state) : position
+}
 
 /** nextApple :: State → Point */
 const nextApple = ifElse(willEat)(positionApple)(prop('apple'))
