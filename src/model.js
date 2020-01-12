@@ -30,7 +30,9 @@ const initalizeState = (cols, rows) => ({
 /** isWithinMatrix :: State → Boolean */
 const isWithinMatrix = state => {
   const next = nextHead(state)
-  return next.x > 0 && next.x < state.cols && next.y > 0 && next.y < state.rows
+  return (
+    next.x >= 0 && next.x < state.cols && next.y >= 0 && next.y < state.rows
+  )
 }
 
 /** willCrash :: State -> Boolean */
@@ -45,8 +47,8 @@ const isValidMove = state => move =>
   !pointEq(move)(lastMove(state)) && !pointOp(move)(lastMove(state))
 
 const nextHead = ({ snake, directions }) => ({
-  x: head(snake).x + head(directions).x,
-  y: head(snake).y + head(directions).y
+  x: head(snake).x + last(directions).x,
+  y: head(snake).y + last(directions).y
 })
 
 const nextSnake = state =>
