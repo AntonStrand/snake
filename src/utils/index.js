@@ -59,6 +59,9 @@ const pointOp = p1 => p2 => p1.x == -p2.x && p1.y == -p2.y
 const ifElse = pred => onTrue => onFalse => x =>
   pred(x) ? onTrue(x) : onFalse(x)
 
+/** and :: ((a → Boolean), (a → Boolean)) → a → Boolean */
+const and = (f, g) => x => f(x) && g(x)
+
 module.exports = {
   always,
   applySpec,
@@ -75,5 +78,6 @@ module.exports = {
   pointEq,
   pointOp,
   ifElse,
+  and,
   ...require('./random')
 }
