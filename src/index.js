@@ -32,9 +32,18 @@ const range = from => to =>
     .fill()
     .map((_, i) => from + i)
 
+/** isSnake :: State → Point → Boolean */
+const isSnake = ({ snake }) => point =>
+  console.log(snake, point) || snake.some(pointEq(point))
+
+/** isApple :: State → Point → Boolean */
+const isApple = ({ apple }) => pointEq(apple)
+
 const createBoard = state =>
   range(0)(8).map((_, y) =>
-    range(0)(8).map((_, x) => (state.snake.some(pointEq({ x, y })) ? '#' : '.'))
+    range(0)(8).map((_, x) =>
+      isSnake(state)({ x, y }) ? '#' : isApple(state)({ x, y }) ? '' : '.'
+    )
   )
 
 const printBoard = board =>
