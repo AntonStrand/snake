@@ -59,7 +59,11 @@ const nextHead = ({ snake, directions }) => ({
 
 /** nextSnake :: State → [Point] */
 const nextSnake = state =>
-  willCrash(state) ? [] : [nextHead(state), ...init(state.snake)]
+  willCrash(state)
+    ? []
+    : willEat(state)
+    ? [nextHead(state), ...state.snake]
+    : [nextHead(state), ...init(state.snake)]
 
 /** positionApple :: State → Point */
 const positionApple = ({ cols, rows }) => randomPoint(cols)(rows)
