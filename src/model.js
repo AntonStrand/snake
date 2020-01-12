@@ -10,7 +10,8 @@ const {
   gt,
   pointEq,
   pointOp,
-  ifElse
+  ifElse,
+  randomPoint
 } = require('./utils')
 
 /** DIRECTIONS */
@@ -23,6 +24,7 @@ const UP = { x: 0, y: -1 }
 const initalizeState = (cols, rows) => ({
   directions: [RIGHT],
   snake: [{ x: 0, y: parseInt(rows / 2) }],
+  apple: randomPoint(cols)(rows),
   cols,
   rows
 })
@@ -63,7 +65,8 @@ const update = applySpec({
   cols: prop('cols'),
   rows: prop('rows'),
   directions: nextDirections,
-  snake: nextSnake
+  snake: nextSnake,
+  apple: prop('apple')
 })
 
 const addDirection = move => state =>
