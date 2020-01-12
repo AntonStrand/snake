@@ -7,16 +7,19 @@ const applySpec = spec => x =>
     .map(k => ({ [k]: spec[k](x) }))
     .reduce((obj, o) => ({ ...obj, ...o }), {})
 
-/** head :: [a] -> a */
+/** dec :: Number → Number */
+const dec = x => x - 1
+
+/** head :: [a] → a */
 const head = xs => xs[0]
 
-/** identity :: a -> a */
+/** identity :: a → a */
 const identity = x => x
 
-/** init :: [a] -> [a] */
+/** init :: [a] → [a] */
 const init = xs => xs.slice(0, -1)
 
-/** last :: [a] -> a */
+/** last :: [a] → a */
 const last = xs => xs[xs.length - 1]
 
 /** pipe :: (((a, b, …, n) → o), (o → p), …, (y → z)) → ((a, b, …, n) → z) */
@@ -26,8 +29,14 @@ const pipe = (...fns) => (...args) =>
 /** prop :: Number k, String k => k → ({k: a} | [a]) → a | Undefined */
 const prop = key => obj => obj[key]
 
-/** tail :: [a] -> [a] */
+/** tail :: [a] → [a] */
 const tail = ([_, ...xs]) => xs
+
+/** range :: Number → Number → [Number] */
+const range = from => to =>
+  Array(to - from)
+    .fill()
+    .map((_, i) => from + i)
 
 /**
  * PREDICATES
@@ -53,6 +62,7 @@ const ifElse = pred => onTrue => onFalse => x =>
 module.exports = {
   always,
   applySpec,
+  dec,
   head,
   identity,
   init,
@@ -60,6 +70,7 @@ module.exports = {
   pipe,
   prop,
   tail,
+  range,
   gt,
   pointEq,
   pointOp,

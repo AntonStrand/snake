@@ -1,6 +1,6 @@
-const { identity, pointEq } = require('./utils')
+const { identity } = require('./utils')
 const config = require('./config')
-const GRAPHICS = config.graphics
+const { createView } = require('./cli/view')
 const readline = require('readline')
 readline.emitKeypressEvents(process.stdin)
 process.stdin.setRawMode(true)
@@ -11,8 +11,8 @@ const ROWS = 20
 const game = require('./model')
 let state = game.initalizeState(COLS, ROWS)
 
-/** Each key in DIRECTION_KEY is associated with a direction changing function */
-const switchDirection = Object.entries(config.direction_keys).reduce(
+/** switchDirection :: { key :: (State → State) } */
+const switchDirection = Object.entries(config.keys).reduce(
   (savedDirections, [direction, keys]) => ({
     ...savedDirections,
     ...keys.reduce(
@@ -24,36 +24,10 @@ const switchDirection = Object.entries(config.direction_keys).reduce(
   {}
 )
 
-const range = from => to =>
-  Array(to - from)
-    .fill()
-    .map((_, i) => from + i)
-
-/** isSnake :: State → Point → Boolean */
-const isSnake = ({ snake }) => point => snake.some(pointEq(point))
-
-/** isApple :: State → Point → Boolean */
-const isApple = ({ apple }) => pointEq(apple)
-
-const createBoard = state =>
-  range(0)(state.rows)
-    .map((_, y) =>
-      range(0)(state.cols)
-        .map((_, x) =>
-          isSnake(state)({ x, y })
-            ? GRAPHICS.snake
-            : isApple(state)({ x, y })
-            ? GRAPHICS.apple
-            : GRAPHICS.background
-        )
-        .join(GRAPHICS.background)
-    )
-    .join('\n')
-
-/** getStateChange :: Key -> (State -> State) */
+/** getStateChange :: Key → (State → State) */
 const getStateChange = ({ name }) => switchDirection[name] || identity
 
-/** isQuiting :: Key -> */
+/** isQuiting :: Key → Boolean */
 const isQuiting = key => key.ctrl && key.name === 'c'
 
 /** Handle key press */
@@ -61,10 +35,10 @@ process.stdin.on('keypress', (_, key) => {
   state = isQuiting(key) ? process.exit() : getStateChange(key)(state)
 })
 
-setInterval(() => {
+const tick = () => {
   state = game.update(state)
   console.clear()
-  console.log(createBoard(state))
-}, 80)
+  console.log(createView(state))
+}
 
-console.log('Press any key...')
+setInterval(tick, config.updateRate)
