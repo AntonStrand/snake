@@ -1,6 +1,6 @@
 {
   "name": "play-snake",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "CLI Snake in a functional style",
   "main": "src/index.js",
   "preferGlobal": true,
