@@ -3,8 +3,11 @@ const readline = require('readline')
 readline.emitKeypressEvents(process.stdin)
 process.stdin.setRawMode(true)
 
+const COLS = 20
+const ROWS = 20
+
 const game = require('./model')
-let state = game.initalizeState(8, 8)
+let state = game.initalizeState(COLS, ROWS)
 
 /** List of keys connected to a direction */
 const DIRECTION_KEYS = {
@@ -39,14 +42,15 @@ const isSnake = ({ snake }) => point => snake.some(pointEq(point))
 const isApple = ({ apple }) => pointEq(apple)
 
 const createBoard = state =>
-  range(0)(8).map((_, y) =>
-    range(0)(8).map((_, x) =>
-      isSnake(state)({ x, y }) ? '#' : isApple(state)({ x, y }) ? '' : '.'
+  range(0)(state.rows)
+    .map((_, y) =>
+      range(0)(state.cols)
+        .map((_, x) =>
+          isSnake(state)({ x, y }) ? '#' : isApple(state)({ x, y }) ? '' : '.'
+        )
+        .join(' ')
     )
-  )
-
-const printBoard = board =>
-  console.log(board.map(row => row.join(' ')).join('\n'))
+    .join('\n')
 
 /** getStateChange :: Key -> (State -> State) */
 const getStateChange = ({ name }) => switchDirection[name] || identity
@@ -61,8 +65,8 @@ process.stdin.on('keypress', (_, key) => {
 
 setInterval(() => {
   state = game.update(state)
-  printBoard(createBoard(state))
-  console.log(state)
-}, 1000)
+  console.clear()
+  console.log(createBoard(state))
+}, 80)
 
 console.log('Press any key...')
