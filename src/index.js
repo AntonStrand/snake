@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 const game = require('./cli/game')
 const { minSize } = require('./config')
 const { and, pipe, gt } = require('./utils')
