@@ -77,11 +77,13 @@ const positionApple = state => {
 /** nextApple :: State → Point */
 const nextApple = ifElse(willEat)(positionApple)(prop('apple'))
 
+/** nextDirections :: State → [Point] */
 const nextDirections = pipe(
   prop('directions'),
   ifElse(pipe(prop('length'), gt(1)))(tail)(identity)
 )
 
+/** update :: State → State */
 const update = applySpec({
   cols: prop('cols'),
   rows: prop('rows'),
@@ -90,6 +92,7 @@ const update = applySpec({
   apple: nextApple
 })
 
+/** addDirection :: Point → State → State */
 const addDirection = move => state =>
   isValidMove(state)(move)
     ? { ...state, directions: [...state.directions, move] }
