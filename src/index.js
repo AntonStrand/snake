@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 const game = require('./cli/game')
 const { minSize } = require('./config')
-const { and, pipe, gt } = require('./utils')
+const { and, pipe, gte } = require('./utils')
 const { help, options, isOption } = require('./cli/options') 
 
 const exit = (status = 0, message = help) => {
@@ -10,25 +10,20 @@ const exit = (status = 0, message = help) => {
 }
 
 /** isValidInput :: a → Boolean */
-const isValidInput = pipe(Number, and(Number.isInteger, gt(minSize-1)))
+const isValidInput = pipe(Number, and(Number.isInteger, gte(minSize)))
 
 /** onOne :: [String] → () */
 const onOne = ([arg]) =>
-  isOption(arg)
-    ? exit(0, options[arg])
-    : isValidInput(arg)
-    ? game.start(arg, arg)
-    : exit(1)
+  isValidInput(arg) ? game.start(arg, arg)
+  : isOption(arg)   ? exit(0, options[arg])
+  : exit(1)
 
 /** onTwo :: [String] → () */
 const onTwo = ([a, b]) =>
-  isValidInput(a) && isValidInput(b)
-    ? game.start(a, b)
-    : isValidInput(a) && b === '-b'
-    ? game.start(a, a, false)
-    : isValidInput(b) && a === '-b'
-    ? game.start(b, b, false)
-    : exit(1)
+  isValidInput(a) && isValidInput(b)  ? game.start(a, b)
+  : isValidInput(a) && b === '-b'     ? game.start(a, a, false)
+  : isValidInput(b) && a === '-b'     ? game.start(b, b, false)
+  : exit(1)
 
 /** onThree :: [String] → () */
 const onThree = args => {
