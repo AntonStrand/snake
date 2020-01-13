@@ -45,6 +45,9 @@ const range = from => to =>
 /** gt :: Number → Number → Boolean */
 const gt = x => y => y > x
 
+/** gte :: Number → Number → Boolean */
+const gte = x => y => y >= x
+
 /** pointEq :: Point → Point → Boolean */
 const pointEq = p1 => p2 => p1.x == p2.x && p1.y == p2.y
 
@@ -75,6 +78,7 @@ module.exports = {
   tail,
   range,
   gt,
+  gte,
   pointEq,
   pointOp,
   ifElse,
