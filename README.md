@@ -17,18 +17,22 @@ npm install -g play-snake
 ### Play
 Run `snake` followed by arguments.
 
-Size (min: 3) [Integer]
+1. Size (min: 3) [Integer]
+
+It will create a square board with the provided dimensions.
 ```bash
 snake <size>
 ```
 or : 
-1. Number of columns (min: 3) [Integer]  
-2. Number of rows (min: 3) [Integer]  
+1. Width (min: 3) [Integer]  
+2. Height (min: 3) [Integer]  
+
+It will create a board with the provided dimensions.
 ```bash
-snake <cols> <rows>
+snake <width> <height>
 ``` 
 
-#### Options:
+#### Options
  `-b` Play a black and white version of the game  
  `-h` Help  
  `-i` Game instruction
